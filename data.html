@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Submitted Data</title>
+  <style>
+    .card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-top: 20px;
+      display: block;
+    }
+    .card-container {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>View Submitted Data</h1>
+  <div id="cardContainer" class="card-container"></div>
+
+  <script>
+    const cardContainer = document.getElementById('cardContainer');
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzappjylCm3RnzRQuoQxCB3Wp10TkEKcyZmD2ZiFTTxBXmvZzOFz5ZL7ryI98kVxncTJg/exec';  // Replace with your actual Web App URL
+
+    function fetchAllData() {
+      const fetchData = new FormData();
+      fetchData.append('action', 'fetch');  // Include 'action=fetch' to get all rows data
+
+      fetch(webAppUrl, {
+        method: 'POST',
+        body: fetchData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          displayData(data.data);
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    }
+
+    function displayData(data) {
+      // Clear previous cards
+      cardContainer.innerHTML = '';
+
+      // Loop through the data and create cards for each entry
+      data.forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+        card.innerHTML = `
+          <p><strong>Title:</strong> ${item.Title}</p>
+          <p><strong>Category:</strong> ${item.Category}</p>
+          <p><strong>Image:</strong> ${item.Image}</p>
+          <p><strong>Description:</strong> ${item.Description}</p>
+        `;
+        cardContainer.appendChild(card);
+      });
+    }
+
+    // Fetch and display all data when the page loads
+    window.onload = fetchAllData;
+  </script>
+
+</body>
+</html>

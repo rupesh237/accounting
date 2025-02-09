@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit</title>
+</head>
+<body>
+
+  <h1>Add Case Studies</h1>
+
+  <form id="dataForm">
+    <label for="title">Title:</label><br>
+    <input type="text" id="Title" name="Title" required><br><br>
+    <label for="category">Category:</label><br>
+    <input type="text" id="Category" name="Category" required><br><br>
+    <label for="image">Image:</label><br>
+    <input type="text" id="Image" name="Image" required><br><br>
+    <label for="description">Description:</label><br>
+    <textarea id="Description" name="Description" required></textarea>
+    <br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+  <br>
+
+  <script>
+    const form = document.getElementById('dataForm');
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzappjylCm3RnzRQuoQxCB3Wp10TkEKcyZmD2ZiFTTxBXmvZzOFz5ZL7ryI98kVxncTJg/exec';  // Replace with your actual Web App URL
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      formData.append('action', 'submit');  // Include 'action=submit' in the request
+
+      fetch(webAppUrl, {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          alert('Data submitted successfully!');
+          form.reset();  // Reset the form after submission
+        }
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+
+</body>
+</html>
